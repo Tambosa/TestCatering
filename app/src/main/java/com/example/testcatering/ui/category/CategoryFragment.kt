@@ -24,7 +24,7 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getString("category")?.let {
-            binding.categoryName.text = it
+            binding.header.categoryName.text = it
         }
     }
 

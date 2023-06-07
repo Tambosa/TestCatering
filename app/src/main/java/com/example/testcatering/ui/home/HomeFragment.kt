@@ -31,11 +31,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.data.observe(viewLifecycleOwner) { categories ->
-            mainAdapter.items = categories
-            mainAdapter.notifyDataSetChanged()
-        }
+        initViewmodel()
+        initRecycler()
+        viewModel.getCategories()
+    }
 
+    private fun initRecycler() {
         binding.recyclerCategory.apply {
             adapter = mainAdapter
             layoutManager = LinearLayoutManager(
@@ -44,7 +45,13 @@ class HomeFragment : Fragment() {
                 false
             )
         }
-        viewModel.getCategories()
+    }
+
+    private fun initViewmodel() {
+        viewModel.data.observe(viewLifecycleOwner) { categories ->
+            mainAdapter.items = categories
+            mainAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun onCategoryItemClick(position: Int) {
@@ -55,7 +62,6 @@ class HomeFragment : Fragment() {
             bundle
         )
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

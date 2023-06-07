@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
 
+    <include
+        android:id="@+id/header"
+        layout="@layout/header_main" />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_category"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginStart="@dimen/margin_recycler_view"
         android:layout_marginEnd="@dimen/margin_recycler_view"
-        android:id="@+id/recycler_category"
-        tools:listitem="@layout/item_category"
         tools:itemCount="10"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</FrameLayout>
+        tools:listitem="@layout/item_category" />
+</LinearLayout>
