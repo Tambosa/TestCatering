@@ -2,4 +2,10 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="padding_toolbar">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_recycler_view">16dp</dimen>
+    <dimen name="margin_start_category">16dp</dimen>
+    <dimen name="margin_top_category">12dp</dimen>
+    <dimen name="max_width_category_title">190dp</dimen>
 </resources>

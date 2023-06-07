@@ -8,4 +8,4 @@ data class Dish(
     val price: Int,
     val tags: List<String>,
     val weight: Int,
-)
+): DishDisplayableItem

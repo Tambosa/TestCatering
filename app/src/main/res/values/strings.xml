@@ -6,4 +6,7 @@
     <string name="title_search">Поиск</string>
     <string name="title_cart">Корзина</string>
     <string name="title_account">Аккаунт</string>
+    <string name="profile_image">profile image</string>
+    <string name="hardcoded_city_name">Санкт-Петербург</string>
+    <string name="hardcoded_date">12 Августа, 2023</string>
 </resources>
