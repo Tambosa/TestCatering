@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_category"
+        android:name="com.example.testcatering.ui.category.CategoryFragment"
+        android:label="@string/title_category"
+        tools:layout="@layout/fragment_category" />
+
+    <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.testcatering.ui.search.SearchFragment"
         android:label="@string/title_search"
