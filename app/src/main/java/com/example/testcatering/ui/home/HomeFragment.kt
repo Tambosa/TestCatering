@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testcatering.R
 import com.example.testcatering.databinding.FragmentHomeBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+
 
 class HomeFragment : Fragment() {
 
@@ -33,7 +37,15 @@ class HomeFragment : Fragment() {
 
         initViewmodel()
         initRecycler()
+        initHeader()
         viewModel.getCategories()
+    }
+
+    private fun initHeader() {
+        binding.header.headerDate.text = SimpleDateFormat(
+            "dd-MMMM-yyyy",
+            Locale.getDefault()
+        ).format(Calendar.getInstance().time)
     }
 
     private fun initRecycler() {

@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testcatering.databinding.FragmentCartBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class CartFragment : Fragment() {
 
@@ -34,8 +37,16 @@ class CartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViewmodel()
+        initHeader()
         initRecycler()
         viewModel.getCart()
+    }
+
+    private fun initHeader() {
+        binding.header.headerDate.text = SimpleDateFormat(
+            "dd-MMMM-yyyy",
+            Locale.getDefault()
+        ).format(Calendar.getInstance().time)
     }
 
     private fun initRecycler() {
