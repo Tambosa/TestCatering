@@ -8,6 +8,7 @@ import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -66,6 +67,12 @@ class CategoryFragment : Fragment() {
             dishAdapter.items = dish
             dishAdapter.notifyDataSetChanged()
         }
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            with(binding) {
+                progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+                recyclerDish.visibility = if (isLoading) View.GONE else View.VISIBLE
+            }
+        }
     }
 
     private fun initTagChips() {
@@ -95,7 +102,9 @@ class CategoryFragment : Fragment() {
                     dialog.dismiss()
                 }
                 btnAddToCart.setOnClickListener {
-
+                    viewModel.addToCart(dish)
+                    Toast.makeText(requireContext(), "${dish.name} в корзине", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }

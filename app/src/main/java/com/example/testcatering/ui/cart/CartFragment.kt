@@ -4,35 +4,73 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testcatering.databinding.FragmentCartBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CartFragment : Fragment() {
 
     private var _binding: FragmentCartBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private val viewModel: CartViewModel by viewModel()
+    private val mainAdapter =
+        CartAdapter(
+            onMinus = { position -> onMinus(position) },
+            onPlus = { position -> onPlus(position) },
+        )
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val cartViewModel =
-            ViewModelProvider(this).get(CartViewModel::class.java)
-
         _binding = FragmentCartBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textCart
-        cartViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initViewmodel()
+        initRecycler()
+        viewModel.getCart()
+    }
+
+    private fun initRecycler() {
+        binding.recyclerCart.apply {
+            adapter = mainAdapter
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.VERTICAL,
+                false
+            )
         }
-        return root
+    }
+
+    private fun initViewmodel() {
+        viewModel.cart.observe(viewLifecycleOwner) { items ->
+            mainAdapter.items = items
+            mainAdapter.notifyDataSetChanged()
+            if (items.isEmpty()) {
+                binding.btnPay.text = "Пусто :("
+            } else {
+                var sum = 0
+                items.forEach {
+                    sum += it.first.price * it.second
+                }
+                binding.btnPay.text = "Оплатить $sum ₽"
+            }
+        }
+    }
+
+    private fun onPlus(position: Int) {
+        viewModel.cart.value?.get(position)?.first?.let { viewModel.addItem(it) }
+    }
+
+    private fun onMinus(position: Int) {
+        viewModel.cart.value?.get(position)?.first?.let { viewModel.removeItem(it) }
     }
 
     override fun onDestroyView() {

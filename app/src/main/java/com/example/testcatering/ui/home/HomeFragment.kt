@@ -52,6 +52,12 @@ class HomeFragment : Fragment() {
             mainAdapter.items = categories
             mainAdapter.notifyDataSetChanged()
         }
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            with(binding) {
+                progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+                recyclerCategory.visibility = if (isLoading) View.GONE else View.VISIBLE
+            }
+        }
     }
 
     private fun onCategoryItemClick(position: Int) {
