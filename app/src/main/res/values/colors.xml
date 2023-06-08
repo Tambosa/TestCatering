@@ -10,4 +10,5 @@
 
     <color name="menu_default">#A5A9B2</color>
     <color name="menu_selected">#3364E0</color>
+    <color name="card_background">#F8F7F5</color>
 </resources>

@@ -10,4 +10,9 @@
     <string name="hardcoded_city_name">Санкт-Петербург</string>
     <string name="hardcoded_date">12 Августа, 2023</string>
     <string name="title_category">Категория</string>
+    <string name="all_menu">Все меню</string>
+    <string name="salads">Салаты</string>
+    <string name="with_rice">С рисом</string>
+    <string name="with_fish">С рыбой</string>
+    <string name="add_to_cart">Добавить в корзину</string>
 </resources>
