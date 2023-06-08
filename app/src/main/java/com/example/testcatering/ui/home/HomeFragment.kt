@@ -1,14 +1,26 @@
 package com.example.testcatering.ui.home
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testcatering.R
 import com.example.testcatering.databinding.FragmentHomeBinding
+import com.example.testcatering.ui.common.getAddress
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -23,6 +35,11 @@ class HomeFragment : Fragment() {
     private val mainAdapter =
         MainAdapter(onCategoryItemClick = { position -> onCategoryItemClick(position) })
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) {}
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,11 +51,33 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initViewmodel()
         initRecycler()
         initHeader()
         viewModel.getCategories()
+    }
+
+    private fun initLocation(context: Context) {
+        CoroutineScope(Dispatchers.IO).launch {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                locationPermissionRequest.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION))
+            }
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                Geocoder(context, Locale.getDefault()).getAddress(
+                    location.latitude,
+                    location.longitude
+                ) { address ->
+                    requireActivity().runOnUiThread {
+                        binding.header.headerCityName.text = address?.subAdminArea
+                    }
+                }
+            }
+        }
     }
 
     private fun initHeader() {
@@ -46,6 +85,9 @@ class HomeFragment : Fragment() {
             "dd-MMMM-yyyy",
             Locale.getDefault()
         ).format(Calendar.getInstance().time)
+        if (binding.header.headerCityName.text.isNullOrBlank()) {
+            initLocation(requireContext())
+        }
     }
 
     private fun initRecycler() {
