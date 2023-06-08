@@ -18,9 +18,6 @@ import com.example.testcatering.databinding.FragmentHomeBinding
 import com.example.testcatering.ui.common.getAddress
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -58,23 +55,21 @@ class HomeFragment : Fragment() {
     }
 
     private fun initLocation(context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                locationPermissionRequest.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION))
-            }
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                Geocoder(context, Locale.getDefault()).getAddress(
-                    location.latitude,
-                    location.longitude
-                ) { address ->
-                    requireActivity().runOnUiThread {
-                        binding.header.headerCityName.text = address?.subAdminArea
-                    }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            locationPermissionRequest.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION))
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            Geocoder(context, Locale.getDefault()).getAddress(
+                location.latitude,
+                location.longitude
+            ) { address ->
+                requireActivity().runOnUiThread {
+                    binding.header.headerCityName.text = address?.subAdminArea
                 }
             }
         }
