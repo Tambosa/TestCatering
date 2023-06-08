@@ -35,7 +35,16 @@ class HomeFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) {}
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                initLocation(requireContext())
+            }
+
+            else -> {
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +64,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initLocation(context: Context) {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_COARSE_LOCATION
