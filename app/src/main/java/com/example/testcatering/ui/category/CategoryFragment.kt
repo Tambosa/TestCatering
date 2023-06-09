@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,9 +80,6 @@ class CategoryFragment : Fragment() {
                     newItemPosition: Int
                 ) = oldList[oldItemPosition] == newList[newItemPosition]
             })
-            Log.d("@@@", "\n $oldList")
-            Log.d("@@@", "\n $newList")
-            Log.d("@@@", "\n $diff")
             categoryAdapter.items = newList
             diff.dispatchUpdatesTo(categoryAdapter)
         }

@@ -13,11 +13,10 @@ class HomeViewModel(private val repo: CateringRepository) : ViewModel() {
     private val _data = MutableLiveData<List<Category>>(listOf())
     val data: LiveData<List<Category>> = _data
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> = _isLoading
     fun getCategories() {
         viewModelScope.launch {
-            _isLoading.value = true
             _data.value = repo.getCategories()
             _isLoading.value = false
         }
