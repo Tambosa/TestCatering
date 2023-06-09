@@ -12,9 +12,6 @@ import com.example.testcatering.databinding.FragmentAccountBinding
 class AccountFragment : Fragment() {
 
     private var _binding: FragmentAccountBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -22,17 +19,13 @@ class AccountFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val accountViewModel =
-            ViewModelProvider(this).get(AccountViewModel::class.java)
-
+        val accountViewModel = ViewModelProvider(this)[AccountViewModel::class.java]
         _binding = FragmentAccountBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
         val textView: TextView = binding.textAccount
         accountViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {

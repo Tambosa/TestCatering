@@ -75,12 +75,14 @@ class HomeFragment : Fragment() {
             locationPermissionRequest.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION))
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            Geocoder(context, Locale.getDefault()).getAddress(
-                location.latitude,
-                location.longitude
-            ) { address ->
-                requireActivity().runOnUiThread {
-                    binding.header.headerCityName.text = address?.subAdminArea
+            if (location != null) {
+                Geocoder(context, Locale.getDefault()).getAddress(
+                    location.latitude,
+                    location.longitude
+                ) { address ->
+                    requireActivity().runOnUiThread {
+                        binding.header.headerCityName.text = address?.subAdminArea
+                    }
                 }
             }
         }
