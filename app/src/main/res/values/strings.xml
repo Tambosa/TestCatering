@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">TestCatering</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Главная</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_search">Поиск</string>
+    <string name="title_cart">Корзина</string>
+    <string name="title_account">Аккаунт</string>
+    <string name="profile_image">profile image</string>
+    <string name="hardcoded_city_name">Санкт-Петербург</string>
+    <string name="hardcoded_date">12 Августа, 2023</string>
+    <string name="title_category">Категория</string>
+    <string name="all_menu">Все меню</string>
+    <string name="salads">Салаты</string>
+    <string name="with_rice">С рисом</string>
+    <string name="with_fish">С рыбой</string>
+    <string name="add_to_cart">Добавить в корзину</string>
 </resources>
