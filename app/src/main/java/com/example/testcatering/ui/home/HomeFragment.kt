@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.domain.model.Category
 import com.example.testcatering.R
 import com.example.testcatering.databinding.FragmentHomeBinding
 import com.example.testcatering.ui.common.getAddress
@@ -108,23 +109,7 @@ class HomeFragment : Fragment() {
 
     private fun initViewmodel() {
         viewModel.data.observe(viewLifecycleOwner) { newList ->
-            val oldList = homeAdapter.items ?: listOf()
-            val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-                override fun getOldListSize() = oldList.size
-
-                override fun getNewListSize() = newList.size
-
-                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-                    oldList[oldItemPosition]::class == newList[newItemPosition]::class &&
-                            oldList[oldItemPosition] == newList[newItemPosition]
-
-                override fun areContentsTheSame(
-                    oldItemPosition: Int,
-                    newItemPosition: Int
-                ) = oldList[oldItemPosition] == newList[newItemPosition]
-            })
-            homeAdapter.items = newList
-            diff.dispatchUpdatesTo(homeAdapter)
+            renderRecyclerData(newList)
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             with(binding) {
@@ -132,6 +117,26 @@ class HomeFragment : Fragment() {
                 recyclerCategory.visibility = if (isLoading) View.GONE else View.VISIBLE
             }
         }
+    }
+
+    private fun renderRecyclerData(newList: List<Category>) {
+        val oldList = homeAdapter.items ?: listOf()
+        val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize() = oldList.size
+
+            override fun getNewListSize() = newList.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+                oldList[oldItemPosition]::class == newList[newItemPosition]::class &&
+                        oldList[oldItemPosition] == newList[newItemPosition]
+
+            override fun areContentsTheSame(
+                oldItemPosition: Int,
+                newItemPosition: Int
+            ) = oldList[oldItemPosition] == newList[newItemPosition]
+        })
+        homeAdapter.items = newList
+        diff.dispatchUpdatesTo(homeAdapter)
     }
 
     private fun onCategoryItemClick(position: Int) {
