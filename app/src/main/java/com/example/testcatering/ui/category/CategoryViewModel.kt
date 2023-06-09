@@ -35,9 +35,7 @@ class CategoryViewModel(
     fun selectTag(tag: String) {
         _selectedTag.value = tag
         viewModelScope.launch {
-            _isLoading.value = true
             _data.value = repo.getDishes().filter { it.tags.contains(tag) }
-            _isLoading.value = false
         }
     }
 

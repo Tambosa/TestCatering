@@ -5,12 +5,14 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import com.example.testcatering.R
@@ -26,8 +28,8 @@ class CategoryFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: CategoryViewModel by viewModel()
 
-    private val dishAdapter =
-        DishAdapter(onDishItemClick = { position -> onDishItemClick(position) })
+    private val categoryAdapter =
+        CategoryAdapter(onDishItemClick = { position -> onDishItemClick(position) })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +57,7 @@ class CategoryFragment : Fragment() {
 
     private fun initRecycler() {
         binding.recyclerDish.apply {
-            adapter = dishAdapter
+            adapter = categoryAdapter
             layoutManager =
                 GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
             addItemDecoration(ItemOffsetDecoration(requireContext(), R.dimen.margin_small))
@@ -63,10 +65,29 @@ class CategoryFragment : Fragment() {
     }
 
     private fun initViewmodel() {
-        viewModel.data.observe(viewLifecycleOwner) { dish ->
-            dishAdapter.items = dish
-            dishAdapter.notifyDataSetChanged()
+        viewModel.data.observe(viewLifecycleOwner) { newList ->
+            val oldList = categoryAdapter.items ?: listOf()
+            val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+                override fun getOldListSize() = oldList.size
+
+                override fun getNewListSize() = newList.size
+
+                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+                    oldList[oldItemPosition]::class == newList[newItemPosition]::class &&
+                            oldList[oldItemPosition] == newList[newItemPosition]
+
+                override fun areContentsTheSame(
+                    oldItemPosition: Int,
+                    newItemPosition: Int
+                ) = oldList[oldItemPosition] == newList[newItemPosition]
+            })
+            Log.d("@@@", "\n $oldList")
+            Log.d("@@@", "\n $newList")
+            Log.d("@@@", "\n $diff")
+            categoryAdapter.items = newList
+            diff.dispatchUpdatesTo(categoryAdapter)
         }
+
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             with(binding) {
                 progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
