@@ -115,8 +115,13 @@ class HomeFragment : Fragment() {
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             with(binding) {
-                progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-                recyclerCategory.visibility = if (isLoading) View.GONE else View.VISIBLE
+                if (isLoading) {
+                    shimmerContainer.startShimmer()
+                    shimmerContainer.visibility = View.VISIBLE
+                } else {
+                    shimmerContainer.stopShimmer()
+                    shimmerContainer.visibility = View.GONE
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.CateringRepository
 import com.example.domain.model.Category
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repo: CateringRepository) : ViewModel() {
@@ -18,6 +19,7 @@ class HomeViewModel(private val repo: CateringRepository) : ViewModel() {
     fun getCategories() {
         viewModelScope.launch {
             _data.value = repo.getCategories()
+            delay(2000)
             _isLoading.value = false
         }
     }
