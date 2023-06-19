@@ -8,4 +8,5 @@
     <dimen name="margin_side_category">16dp</dimen>
     <dimen name="margin_top_category">12dp</dimen>
     <dimen name="max_width_category_title">190dp</dimen>
+    <dimen name="category_image_height">150dp</dimen>
 </resources>

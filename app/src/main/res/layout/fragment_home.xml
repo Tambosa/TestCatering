@@ -10,18 +10,41 @@
         android:id="@+id/header"
         layout="@layout/header_main" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_category"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margin_recycler_view"
-        android:layout_marginEnd="@dimen/margin_recycler_view"
-        tools:itemCount="10"
-        tools:listitem="@layout/item_category" />
+        android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_recycler_view"
+            android:layout_marginEnd="@dimen/margin_recycler_view"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_category_placeholder" />
+
+                <include layout="@layout/item_category_placeholder" />
+
+                <include layout="@layout/item_category_placeholder" />
+
+                <include layout="@layout/item_category_placeholder" />
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_category"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_recycler_view"
+            android:layout_marginEnd="@dimen/margin_recycler_view"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_category" />
+    </FrameLayout>
 </LinearLayout>

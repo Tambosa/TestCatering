@@ -62,12 +62,14 @@ class CartFragment : Fragment() {
             return
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            Geocoder(context, Locale.getDefault()).getAddress(
-                location.latitude,
-                location.longitude
-            ) { address ->
-                requireActivity().runOnUiThread {
-                    binding.header.headerCityName.text = address?.subAdminArea
+            if (location != null) {
+                Geocoder(context, Locale.getDefault()).getAddress(
+                    location.latitude,
+                    location.longitude
+                ) { address ->
+                    requireActivity().runOnUiThread {
+                        binding.header.headerCityName.text = address?.subAdminArea
+                    }
                 }
             }
         }
