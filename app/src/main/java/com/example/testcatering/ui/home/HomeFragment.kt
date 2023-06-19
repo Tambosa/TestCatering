@@ -117,9 +117,9 @@ class HomeFragment : Fragment() {
                         alpha = 0f,
                         duration = 1000,
                         onStart = {
+                            shimmerContainer.stopShimmer()
                         },
                         onFinish = {
-                            shimmerContainer.stopShimmer()
                             shimmerContainer.visibility = View.GONE
                         }
                     )
