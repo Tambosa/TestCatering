@@ -112,22 +112,15 @@ class HomeFragment : Fragment() {
                 if (isLoading) {
                     shimmerContainer.startShimmer()
                     shimmerContainer.visibility = View.VISIBLE
-                    recyclerCategory.visibility = View.GONE
                 } else {
                     shimmerContainer.alphaAnimated(
                         alpha = 0f,
-                        duration = 500,
+                        duration = 1000,
                         onStart = {
                         },
                         onFinish = {
                             shimmerContainer.stopShimmer()
                             shimmerContainer.visibility = View.GONE
-                            recyclerCategory.alpha = 0f
-                            recyclerCategory.alphaAnimated(
-                                1f,
-                                500,
-                                { recyclerCategory.visibility = View.VISIBLE },
-                                {})
                         }
                     )
                 }
